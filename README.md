@@ -45,6 +45,6 @@ The application follows a standard Clean Architecture pattern:
 ## 📝 TODO List
 
 ### High Priority Infrastructure
-- [ ] **Redis Integration**: Implement caching layer
+- [ ] **Redis Integration**: Add distributed caching
 - [ ] **Integration Tests**: Comprehensive testing infrastructure
 - [ ] **Unit Tests**: Core functionality testing
