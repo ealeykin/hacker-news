@@ -1,0 +1,10 @@
+<Project>
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>$(SolutionName).$(MSBuildProjectName)</RootNamespace>
+        <AssemblyName>$(SolutionName).$(MSBuildProjectName)</AssemblyName>
+        <UserSecretsId>3c92e0c3-f05a-4b13-9fb0-d86aa18273e8</UserSecretsId>
+    </PropertyGroup>
+</Project>
