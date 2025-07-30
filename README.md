@@ -35,7 +35,12 @@ TODO
 
 ## 🏗️ Current Architecture
 
-The application follows a standard ASP.NET Core structure with:
+The application follows a standard Clean Architecture pattern:
+- Application layer
+- Infrastructure layer
+- Application host
+- Integration tests using Aspire
+- Unit tests using xUnit
 
 ## 📝 TODO List
 
