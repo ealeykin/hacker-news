@@ -3,12 +3,12 @@ using System.Text.Json.Serialization;
 using HackerNews.HackerNews.Application;
 using HackerNews.HackerNews.Host.Extensions;
 using HackerNews.HackerNews.Infrastructure;
-using HackerNews.HackerNews.Infrastructure.HackerNewsClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder
     .AddSerilog()
+    .AddHealthChecks()
     .AddOpenTelemetry("hacker-news")
     .AddApplication()
     .AddInfrastructure();
@@ -24,14 +24,6 @@ builder.Services
         o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     });
 
-var hackerNewsOptions = builder.Configuration.GetSection("HackerNews").Get<HackerNewsOptions>()!;
-
-Prometheus.Metrics.SuppressDefaultMetrics();
-
-builder.Services
-    .AddHealthChecks()
-    .AddUrlGroup(new Uri(hackerNewsOptions.Url), "hacker-news");
-
 var app = builder.Build();
 
 app.UseExceptionHandler(_ => { });
@@ -39,8 +31,7 @@ app.UseSwagger().UseSwaggerUI();
 app.UseAuthentication().UseAuthorization();
 app.MapControllers();
 
-app
-    .UseHealthChecksPrometheusExporter("/health")
-    .UseOpenTelemetryPrometheusScrapingEndpoint();
+app.UseHealthChecksPrometheusExporter("/health");
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
 await app.RunAsync();

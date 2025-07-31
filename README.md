@@ -31,7 +31,9 @@ dotnet run
 
 #### API Endpoints
 
-TODO
+- top stories: GET http://{host}/api/v1/stories?count=15
+- metrics: GET http://{host}/metrics
+- health: GET http://{host}/health
 
 ## 🏗️ Current Architecture
 

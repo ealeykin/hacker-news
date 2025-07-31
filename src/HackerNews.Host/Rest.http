@@ -1,0 +1,11 @@
+### GET top stories
+
+GET http://localehost:5180/api/v1/stories?count=15
+
+### GET metrics
+
+GET http://localehost:5180/metrics
+
+### GET health
+
+GET http://localehost:5180/health

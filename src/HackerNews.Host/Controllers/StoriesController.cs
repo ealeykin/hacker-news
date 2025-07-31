@@ -8,14 +8,13 @@ namespace HackerNews.HackerNews.Host.Controllers;
 
 [Authorize]
 [Route("api/v1/stories")]
-public class StoriesController(
-    ILogger<StoriesController> logger) : ControllerBase
+public class StoriesController : ControllerBase
 {
     [HttpGet]
     [AllowAnonymous]
     public async Task<IEnumerable<Story>> GetTopStories(
         [FromServices] GetTopStoriesHandler handler,
-        [FromQuery, Range(0, 100)] int count = 5,
+        [FromQuery, Range(1, 100)] int count = 10,
         CancellationToken cancellationToken = default)
     {
         return await handler.InvokeAsync(new GetTopStoriesRequest(count), cancellationToken);
