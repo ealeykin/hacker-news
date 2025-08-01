@@ -1,4 +1,4 @@
-﻿namespace HackerNews.HackerNews.Tests;
+﻿namespace HackerNews.HackerNews.UnitTests;
 
 public class UnitTest1
 {
