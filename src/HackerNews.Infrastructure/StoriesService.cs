@@ -26,27 +26,28 @@ public class StoriesService(
 
     public async Task<int[]> GetTopStoriesAsync(CancellationToken cancellationToken)
         => await cache.GetOrCreateAsync(
-            key: "top-stories",
+            key: "hacker-news-top-stories",
             factory: async ct => await client.GetTopStoriesAsync(ct),
             options: TopStoriesCacheOptions,
             cancellationToken: cancellationToken);
 
     public async Task<Story> GetStoryAsync(int id, CancellationToken cancellationToken)
-    {
-        var story = await cache.GetOrCreateAsync(
-            key: $"story-{id}", 
-            factory: async ct => await client.GetStoryAsync(id, ct), 
+        => await cache.GetOrCreateAsync(
+            key: $"hacker-news-story-{id}",
+            factory: async ct =>
+            {
+                var story = await client.GetStoryAsync(id, ct);
+
+                return new Story
+                {
+                    Title = story.Title,
+                    Uri = story.Url,
+                    PostedBy = story.By,
+                    Time = DateTimeOffset.FromUnixTimeSeconds(story.Time),
+                    Score = story.Score,
+                    CommentCount = story.Descendants
+                };
+            },
             options: StoriesCacheOptions,
             cancellationToken: cancellationToken);
-
-        return new Story
-        {
-            Title = story.Title,
-            Uri = story.Url,
-            PostedBy = story.By,
-            Time = DateTimeOffset.FromUnixTimeSeconds(story.Time),
-            Score = story.Score,
-            CommentCount = story.Descendants
-        };
-    }
 }
