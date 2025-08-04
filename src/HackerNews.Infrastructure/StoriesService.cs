@@ -11,34 +11,32 @@ public class StoriesService(
 {
     private static readonly TimeSpan TopStoriesTtl = TimeSpan.FromMinutes(60);
     private static readonly TimeSpan StoryTtl = TimeSpan.FromMinutes(60);
-    
-    public async Task<int[]> GetTopStoriesAsync(CancellationToken cancellationToken)
+
+    private static readonly HybridCacheEntryOptions TopStoriesCacheOptions = new()
     {
-        var options = new HybridCacheEntryOptions
-        {
-            Expiration = TopStoriesTtl,
-            LocalCacheExpiration = TopStoriesTtl
-        };
-        
-        return await cache.GetOrCreateAsync(
-            key: "top-stories", 
-            factory: async ct => await client.GetTopStoriesAsync(ct), 
-            options: options,
+        Expiration = TopStoriesTtl,
+        LocalCacheExpiration = TopStoriesTtl
+    };
+    
+    private static readonly HybridCacheEntryOptions StoriesCacheOptions = new()
+    {
+        Expiration = StoryTtl,
+        LocalCacheExpiration = StoryTtl
+    };
+
+    public async Task<int[]> GetTopStoriesAsync(CancellationToken cancellationToken)
+        => await cache.GetOrCreateAsync(
+            key: "top-stories",
+            factory: async ct => await client.GetTopStoriesAsync(ct),
+            options: TopStoriesCacheOptions,
             cancellationToken: cancellationToken);
-    }
 
     public async Task<Story> GetStoryAsync(int id, CancellationToken cancellationToken)
     {
-        var options = new HybridCacheEntryOptions
-        {
-            Expiration = StoryTtl,
-            LocalCacheExpiration = StoryTtl
-        };
-        
         var story = await cache.GetOrCreateAsync(
             key: $"story-{id}", 
             factory: async ct => await client.GetStoryAsync(id, ct), 
-            options: options,
+            options: StoriesCacheOptions,
             cancellationToken: cancellationToken);
 
         return new Story

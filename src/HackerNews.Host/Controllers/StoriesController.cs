@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HackerNews.HackerNews.Host.Controllers;
 
+[ApiController]
 [Authorize]
 [Route("api/v1/stories")]
 public class StoriesController : ControllerBase
